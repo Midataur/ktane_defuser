@@ -44,6 +44,8 @@ while True:
     #Figure out what module is being defused
     elif command[0] == 'wires':
         print simple_wires(command[1:],bomb_vars)
+    elif command[0] == 'button':
+        print button(command[1:],bomb_vars)
     else:
         print 'Unknown command'
 
