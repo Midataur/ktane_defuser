@@ -78,3 +78,28 @@ def button_hold(): #for when a button needs to be held down
         return 'Release button when the countdown timer has a 5 in any position'
     else:
         return 'Release button when the countdown timer has a 1 in any position'
+
+def symbols(visible): #symbols (p7 manual)
+    #usage "symbols number1 number2 number3 number4" (ids found on help image)
+    visible = [int(x) for x in visible]
+    columns = [[1,2,3,4,5,6,7],
+               [8,1,7,9,10,6,11],
+               [12,13,9,14,15,3,10],
+               [16,17,18,5,14,11,19],
+               [20,19,18,21,17,22,23],
+               [16,8,24,25,20,26,27]]
+    #find the column
+    for col in columns:
+        found = True
+        for symb in visible:
+            if symb not in col:
+                found = False
+                break
+        if found:
+            break
+    #check for impossible order
+    if not found:
+        return 'Impossible symbol combination'
+    #order and serve
+    visible = ', '.join([y[1] for y in sorted([[col.index(x),str(x)] for x in visible])])
+    return 'Press the symbols in this order: '+visible

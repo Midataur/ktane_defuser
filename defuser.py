@@ -1,4 +1,5 @@
 from modules import *
+from PIL import Image
 
 print 'KTANE Defuser by Max Petschack'
 
@@ -19,6 +20,14 @@ bomb_vars = {'batteries':batteries,
              'freak':freak,
              'parallel':parallel,
              'strikes':strikes}
+
+help_text = '''Available commands:
+    Meta Commands:
+        done, failed, add strike, help
+    Module Commands:
+        wires, button, symbols
+Type 'help' followed by a module command to see how that command works'''
+im = Image.open('ktanesymbols.png')
 
 print 'Defuser ready'
 
@@ -41,11 +50,27 @@ while True:
             print '3 strikes, bomb failed'
             print "We'll get it next time!"
             break
+    #meta
+    elif command[0] == 'help':
+        #general help
+        if len(command) == 1:
+            print help_text
+        #specific help
+        elif command[1] == 'wires':
+            print 'Usage "wires colour1 colour2 etc."'
+        elif command[1] == 'button':
+            print 'Usage "button colour text"'
+        elif command[1] == 'symbols':
+            im.show()
+            print 'Match each symbol to its number using the image provided'
+            print 'Usage "symbols number1 number2 number 3 number 4"'
     #Figure out what module is being defused
     elif command[0] == 'wires':
         print simple_wires(command[1:],bomb_vars)
     elif command[0] == 'button':
         print button(command[1:],bomb_vars)
+    elif command[0] == 'symbols':
+        print symbols(command[1:])
     else:
         print 'Unknown command'
 
