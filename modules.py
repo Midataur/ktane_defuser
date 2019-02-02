@@ -1,3 +1,9 @@
+def short_to_long(colour): #changes short names to long names
+    table = [['r','red'],['bu','blue'],['bk','black'],['y','yellow'],['g','green'],['w','white']]
+    for x in table:
+        colour = colour.replace(x[0],x[1])
+    return colour
+
 def simple_wires(wires,bomb_vars): #simple wires (p5 on manual)
     #usage "wires wire1 wire2 wire3..."
     serial = bomb_vars['serial']
@@ -79,7 +85,7 @@ def button_hold(): #for when a button needs to be held down
     else:
         return 'Release button when the countdown timer has a 1 in any position'
 
-def symbols(visible): #symbols (p7 manual)
+def symbols(visible,bomb_vars): #symbols (p7 manual)
     #usage "symbols number1 number2 number3 number4" (ids found on help image)
     visible = [int(x) for x in visible]
     columns = [[1,2,3,4,5,6,7],
@@ -103,3 +109,23 @@ def symbols(visible): #symbols (p7 manual)
     #order and serve
     visible = ', '.join([y[1] for y in sorted([[col.index(x),str(x)] for x in visible])])
     return 'Press the symbols in this order: '+visible
+
+def simon(sequence,bomb_vars): #simon module (p8 of manual)
+    strikes = bomb_vars['strikes']
+    if bomb_vars['vowel']:
+        table = {'red':['blue','yellow','green'],
+                 'blue':['red','green','red'],
+                 'green':['yellow','blue','yellow'],
+                 'yellow':['green','red','blue']}
+    else:
+        table = {'red':['blue','red','yellow'],
+                 'blue':['yellow','blue','green'],
+                 'green':['green','yellow','blue'],
+                 'yellow':['red','green','red']}
+    new_seq = []
+    for x in sequence:
+        try:
+            new_seq.append(table[short_to_long(x)][strikes])
+        except:
+            return 'Impossible combination'
+    return 'New colour sequence: '+', '.join(new_seq)
