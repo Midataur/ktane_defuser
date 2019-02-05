@@ -24,7 +24,8 @@ def get_bomb_vars(strikes):
 modules = {'wires':simple_wires,
            'button':button,
            'symbols':symbols,
-           'simon':simon}
+           'simon':simon,
+           'memory':memory}
 
 bomb_vars_lookup = [['batteries','Batteries:'],
                    ['serial','Last serial digit:'],

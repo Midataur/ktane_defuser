@@ -1,7 +1,7 @@
 def short_to_long(colour): #changes short names to long names
     table = [['r','red'],['bu','blue'],['bk','black'],['y','yellow'],['g','green'],['w','white']]
     for x in table:
-        colour = colour.replace(x[0],x[1])
+        colour = x[1] if colour == x[0] else colour
     return colour
 
 def simple_wires(wires,bomb_vars): #simple wires (p5 on manual)
@@ -129,3 +129,37 @@ def simon(sequence,bomb_vars): #simon module (p8 of manual)
         except:
             return 'Impossible combination'
     return 'New colour sequence: '+', '.join(new_seq)
+
+def memory(compat,bomb_vars): #memory module (p11 of manual)
+    pressed = []
+    '''the mess below works by the following rules: the top level lists are the stages,
+        the next level are each stages formatted [argument, (position, label or memory)]'''
+    rules = [[[2,'pos'],[2,'pos'],[3,'pos'],[4,'pos']],
+             [[4,'lab'],[1,'memp'],[1,'pos'],[1,'memp']],
+             [[2,'meml'],[1,'meml'],[3,'pos'],[4,'lab']],
+             [[1,'memp'],[1,'pos'],[2,'memp'],[2,'memp']],
+             [[1,'meml'],[2,'meml'],[4,'meml'],[3,'meml']]]
+    for stage in rules:
+        labels = raw_input('What are the labels? (break to esc): ')
+        if labels == 'break':
+            return 'Exiting module'
+        cur_rule = stage[int(labels[0])-1]
+        if cur_rule[1] == 'pos':
+            print 'Press the button in position',cur_rule[0]
+            pressed.append([cur_rule[0],int(labels[cur_rule[0]])])
+        elif cur_rule[1] == 'lab':
+            pos = list(labels).index(str(cur_rule[0]))
+            print 'Press the button in position',pos
+            pressed.append([pos,cur_rule[0]])
+        elif cur_rule[1] == 'meml':
+            lab = pressed[cur_rule[0]-1][1]
+            pos = list(labels).index(str(lab))
+            print 'Press the button in position',pos
+            pressed.append([pos,lab])
+        elif cur_rule[1] == 'memp':
+            pos = pressed[cur_rule[0]-1][0]
+            print 'Press the button in position',pos
+            pressed.append([pos,int(labels[pos])])
+        else:
+            return 'Somthing broke'
+    return 'Module defused'
